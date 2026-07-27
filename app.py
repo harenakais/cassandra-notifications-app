@@ -15,12 +15,16 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- Connection à Astra DB ---
+# --- Connexion à Astra DB ---
 @st.cache_resource
 def get_cassandra_session():
     try:
+        # Résolution du chemin absolu du fichier .zip pour Streamlit Cloud
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        bundle_path = os.path.join(BASE_DIR, 'secure-connect-notification-db.zip')
+
         cloud_config = {
-            'secure_connect_bundle': 'secure-connect-notification-db.zip'
+            'secure_connect_bundle': bundle_path
         }
         auth_provider = PlainTextAuthProvider(
             st.secrets["ASTRA_CLIENT_ID"], 
